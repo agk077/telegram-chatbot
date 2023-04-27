@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+    <preConditions>
+        <runningAs username="admin"/>
+    </preConditions>
+
+    <changeSet author="agarshina" id="1">
+        <sql>
+            CREATE SCHEMA IF NOT EXISTS hw_tinder;
+        </sql>
+    </changeSet>
+
+    <changeSet id="2" author="agarshina">
+        <createTable remarks="Пользователи" tableName="user" schemaName="hw_tinder">
+            <column remarks="Идентификатор" name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column remarks="Имя" name="name" type="varchar"/>
+            <column remarks="Описание" name="desc" type="text"/>
+            <column remarks="пол" name="gender" type="varchar"/>
+            <column remarks="пол для поиска" name="gender_for_search" type="varchar"/>
+        </createTable>
+    </changeSet>
+
+
+
+    <changeSet id="3" author="agarshina">
+        <createTable remarks="Отношения" tableName="relation" schemaName="hw_tinder">
+            <column remarks="Идентификатор" name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column remarks="Идентификатор пользователя" name="user_id" type="bigint">
+               <constraints nullable="false" foreignKeyName="fk_user" references="hw_tinder.user(id)"/>
+            </column>
+            <column remarks="Идентификатор выбранного пользователя" name="selected_user_id" type="bigint">
+               <constraints nullable="false" foreignKeyName="fk_selected_user" references="hw_tinder.user(id)"/>
+            </column>
+            <column remarks="Симпатия" name="sympathy" type="boolean" defaultValueBoolean="false"/>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet id="4" author="agarshina">
+        <sql>
+            insert into hw_tinder.user (name, "desc", gender, gender_for_search)
+            values ('Бажен','Ничего не имею. Остались только добрая душа, порядочность и графство', 'MALE', 'FEMALE'),
+            ('Белогор','Граф, 33 л., желает посредством брака сделать богатую невесту графиней. Затем согласен дать свободный вид на жительство', 'MALE', 'FEMALE'),
+            ('Ведагор', 'Предлагаю себя в мужья только богатой девушке (не менее 100 000 р. капит.)','MALE', 'FEMALE'),
+            ('Златослав','Поэт-безумец, мистический анархист, ходящий над безднами, призывает из далей ту, что дерзнет с ним рука об руку пройти житейский путь ', 'MALE','FEMALE'),
+            ('Любодар', 'Ищу все равно кого','MALE', null),
+            ('Анисья', 'Ищу все равно кого','FEMALE',  null),
+            ('Ванда', 'Только что кончившая гимназию девица желает выйти замуж за холостого или бездетного вдовца с состоянием. Возраста не стесняться','FEMALE',  'MALE'),
+            ('Галина', '20 лет, образованная барышня ищет мужа миллионера, непременно пожилого','FEMALE',  'MALE'),
+            ('Дуня', 'Красавица, 24 лет, интеллигентная, брюнетка, очень шикарная, ищет знакомств, цель — замужество','FEMALE',  'MALE'),
+            ('Яся','Так жизнь молодая проходит бесследно. А там и скоро конец. Ищу мужа-друга', 'FEMALE',  'MALE');
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
