@@ -3,7 +3,7 @@ package ru.liga.tinderserver.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.liga.tinderserver.Repository.UserRepository;
+import ru.liga.tinderserver.repository.UserRepository;
 import ru.liga.tinderserver.dto.UserDto;
 import ru.liga.tinderserver.entity.User;
 import ru.liga.tinderserver.exception.UserNotFoundException;

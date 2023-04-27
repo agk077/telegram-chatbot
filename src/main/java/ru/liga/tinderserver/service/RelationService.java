@@ -3,7 +3,7 @@ package ru.liga.tinderserver.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.liga.tinderserver.Repository.RelationRepository;
+import ru.liga.tinderserver.repository.RelationRepository;
 import ru.liga.tinderserver.dto.RelationDto;
 import ru.liga.tinderserver.entity.Relation;
 import ru.liga.tinderserver.exception.RelationNotFoundException;
