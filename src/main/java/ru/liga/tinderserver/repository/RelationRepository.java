@@ -9,11 +9,11 @@ import java.util.List;
 @Repository
 public interface RelationRepository extends JpaRepository<Relation, Long> {
 
-    public List<Relation> findAllBySelectedUserId(Long selectedUserId);
+    List<Relation> findAllBySelectedUserId(Long selectedUserId);
 
-    public List<Relation> findAllByUserId(Long userId);
+    List<Relation> findAllByUserId(Long userId);
 
-    public List<Relation> findAllByUserIdAndSympathyTrue(Long userId);
+    List<Relation> findAllByUserIdAndSympathyTrue(Long userId);
 
 
 }

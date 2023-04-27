@@ -3,10 +3,10 @@ package ru.liga.tinderserver.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.liga.tinderserver.repository.UserRepository;
 import ru.liga.tinderserver.dto.UserDto;
 import ru.liga.tinderserver.entity.User;
 import ru.liga.tinderserver.exception.UserNotFoundException;
+import ru.liga.tinderserver.repository.UserRepository;
 
 import java.util.List;
 
@@ -44,7 +44,16 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public boolean isUsersMatch(User user, User selectedUser) {
-        return (user.getGenderForSearch() == null || user.getGenderForSearch().equals(selectedUser.getGender()));
+    /**
+     * Метод определяет подходит ли
+     * первому пользователю второй
+     * по предпочтениям (genderForSearch)
+     *
+     * @param user1
+     * @param user2
+     * @return список отношений
+     */
+    public boolean isUsersMatch(User user1, User user2) {
+        return (user1.getGenderForSearch() == null || user1.getGenderForSearch().equals(user2.getGender()));
     }
 }

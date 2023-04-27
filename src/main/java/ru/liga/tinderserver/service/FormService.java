@@ -14,6 +14,12 @@ public class FormService {
     private final UserService userService;
     private final RelationService relationService;
 
+    /**
+     * Метод получения непросмотренных пользователем анкет
+     *
+     * @param userId
+     * @return список пользователей
+     */
     public List<User> findNewForm(Long userId) {
         User user = userService.findById(userId);
         return userService.findAll()
