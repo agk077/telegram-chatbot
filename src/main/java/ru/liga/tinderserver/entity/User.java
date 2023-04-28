@@ -21,8 +21,10 @@ public class User implements Serializable {
     @Column(name = "\"desc\"", columnDefinition = "TEXT")
     private String desc;
     @Column(name = "gender")
-    private String gender;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
     @Column(name = "gender_for_search")
-    private String genderForSearch;
+    @Enumerated(EnumType.STRING)
+    private Gender genderForSearch;
 
 }

@@ -1,5 +1,6 @@
 package ru.liga.tinderserver.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,14 +28,14 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<HttpStatus> create(@RequestBody UserDto userDto) {
+    public ResponseEntity<HttpStatus> create(@Valid @RequestBody UserDto userDto) {
         userService.create(userDto);
         return ResponseEntity.ok(HttpStatus.OK);
 
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HttpStatus> update(@PathVariable Long id, @RequestBody UserDto userDto) {
+    public ResponseEntity<HttpStatus> update(@PathVariable Long id,@Valid @RequestBody UserDto userDto) {
         userService.update(id, userDto);
         return ResponseEntity.ok(HttpStatus.OK);
     }

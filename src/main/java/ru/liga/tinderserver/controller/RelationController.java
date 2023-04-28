@@ -1,5 +1,6 @@
 package ru.liga.tinderserver.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,13 +50,13 @@ public class RelationController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<HttpStatus> create(@RequestBody RelationDto relationDto) {
+    public ResponseEntity<HttpStatus> create(@Valid @RequestBody RelationDto relationDto) {
         relationService.create(relationDto);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HttpStatus> update(@PathVariable Long id, @RequestBody RelationDto relationDto) {
+    public ResponseEntity<HttpStatus> update(@PathVariable Long id,@Valid @RequestBody RelationDto relationDto) {
         relationService.update(id, relationDto);
         return ResponseEntity.ok(HttpStatus.OK);
     }
