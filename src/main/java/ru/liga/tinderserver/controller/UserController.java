@@ -27,7 +27,7 @@ public class UserController {
         return userService.findById(id);
     }
 
-    @PostMapping("/create")
+    @PostMapping("/")
     public ResponseEntity<HttpStatus> create(@Valid @RequestBody UserDto userDto) {
         userService.create(userDto);
         return ResponseEntity.ok(HttpStatus.OK);
@@ -35,7 +35,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HttpStatus> update(@PathVariable Long id,@Valid @RequestBody UserDto userDto) {
+    public ResponseEntity<HttpStatus> update(@PathVariable Long id, @Valid @RequestBody UserDto userDto) {
         userService.update(id, userDto);
         return ResponseEntity.ok(HttpStatus.OK);
     }

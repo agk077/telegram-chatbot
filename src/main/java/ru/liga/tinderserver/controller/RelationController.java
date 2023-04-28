@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/relation")
+@RequestMapping("api/relationы")
 public class RelationController {
 
     private final RelationService relationService;
@@ -24,6 +24,7 @@ public class RelationController {
         return relationService.findAll();
     }
 
+    //TODO: dto на фронт
     @GetMapping("/{id}")
     public Relation findById(@PathVariable Long id) {
         return relationService.findById(id);
@@ -49,7 +50,7 @@ public class RelationController {
         return relationService.findMutualFeeling(userId);
     }
 
-    @PostMapping("/create")
+    @PostMapping("/")
     public ResponseEntity<HttpStatus> create(@Valid @RequestBody RelationDto relationDto) {
         relationService.create(relationDto);
         return ResponseEntity.ok(HttpStatus.OK);

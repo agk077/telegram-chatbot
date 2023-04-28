@@ -71,6 +71,7 @@ public class RelationService {
      *
      * @return список отношений
      */
+    //TODO: тесты
     public List<Relation> findMutualFeeling(Long userId) {
         List<Relation> result = new ArrayList<>();
         for (Relation relation : findLikeByUserId(userId)) {
@@ -117,7 +118,9 @@ public class RelationService {
      * @return список отношений
      */
     public List<Relation> findRelationByUsers(Long userId, Long selectedUserId) {
-        return findAllByUserId(userId).stream().filter(relation -> Objects.equals(relation.getSelectedUserId(), selectedUserId)).collect(Collectors.toList());
+        return findAllByUserId(userId).stream()
+                .filter(relation -> Objects.equals(relation.getSelectedUserId(), selectedUserId))
+                .collect(Collectors.toList());
     }
 
     @Transactional
