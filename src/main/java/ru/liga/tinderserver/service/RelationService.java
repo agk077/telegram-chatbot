@@ -3,7 +3,6 @@ package ru.liga.tinderserver.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.liga.tinderserver.dto.RelationDto;
 import ru.liga.tinderserver.entity.Relation;
 import ru.liga.tinderserver.exception.RelationNotFoundException;
 import ru.liga.tinderserver.repository.RelationRepository;
@@ -32,7 +31,6 @@ public class RelationService {
      * к другим
      *
      * @param userId
-     *
      * @return список отношений
      */
     public List<Relation> findAllByUserId(Long userId) {
@@ -44,7 +42,6 @@ public class RelationService {
      * к данному пользователю
      *
      * @param userId
-     *
      * @return список отношений
      */
     public List<Relation> findAllBySelectedUserId(Long userId) {
@@ -56,7 +53,6 @@ public class RelationService {
      * кто понравился  пользователю
      *
      * @param userId
-     *
      * @return список отношений
      */
     public List<Relation> findLikeByUserId(Long userId) {
@@ -68,7 +64,6 @@ public class RelationService {
      * с взаимной симпатией для данного пользователя
      *
      * @param userId
-     *
      * @return список отношений
      */
     //TODO: тесты
@@ -100,21 +95,16 @@ public class RelationService {
     }
 
     @Transactional
-    public void create(RelationDto relationDto) {
-        Relation relation = new Relation();
-        relation.setUserId(relationDto.getUserId());
-        relation.setSelectedUserId(relationDto.getSelectedUserId());
-        relation.setSympathy(relationDto.isSympathy());
-        relationRepository.save(relation);
+    public Relation create(Relation relation) {
+       return relationRepository.save(relation);
     }
 
     /**
      * Метод возвращает оношение первого пользователя
      * ко второму
      *
-     * @param userId пользователь, у которого проверяем отношения
+     * @param userId         пользователь, у которого проверяем отношения
      * @param selectedUserId пользователь, к которому отношения
-     *
      * @return список отношений
      */
     public List<Relation> findRelationByUsers(Long userId, Long selectedUserId) {
@@ -124,11 +114,8 @@ public class RelationService {
     }
 
     @Transactional
-    public void update(Long id, RelationDto relationDto) {
-        Relation relation = findById(id);
-        relation.setUserId(relationDto.getUserId());
-        relation.setSelectedUserId(relationDto.getSelectedUserId());
-        relation.setSympathy(relationDto.isSympathy());
-        relationRepository.save(relation);
+    public Relation update(Long id, Relation relation) {
+        relation.setId(id);
+        return relationRepository.save(relation);
     }
 }

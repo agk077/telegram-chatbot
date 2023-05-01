@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RelationDto {
+    private Long id;
     @NotNull
     private Long userId;
     @NotNull

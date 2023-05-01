@@ -3,7 +3,6 @@ package ru.liga.tinderserver.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.liga.tinderserver.dto.UserDto;
 import ru.liga.tinderserver.entity.User;
 import ru.liga.tinderserver.exception.UserNotFoundException;
 import ru.liga.tinderserver.repository.UserRepository;
@@ -25,23 +24,14 @@ public class UserService {
     }
 
     @Transactional
-    public void create(UserDto userDto) {
-        User user = new User();
-        user.setName(userDto.getName());
-        user.setDesc(userDto.getDesc());
-        user.setGender(userDto.getGender());
-        user.setGenderForSearch(userDto.getGenderForSearch());
-        userRepository.save(user);
+    public User create(User user) {
+       return userRepository.save(user);
     }
 
     @Transactional
-    public void update(Long id, UserDto userDto) {
-        User user = findById(id);
-        user.setName(userDto.getName());
-        user.setDesc(userDto.getDesc());
-        user.setGender(userDto.getGender());
-        user.setGenderForSearch(userDto.getGenderForSearch());
-        userRepository.save(user);
+    public User update(Long id, User user) {
+        user.setId(id);
+        return userRepository.save(user);
     }
 
     /**
