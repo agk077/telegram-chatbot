@@ -24,11 +24,11 @@ public class FormService {
      */
     public List<User> findNewForm(Long userId) {
         User user = userService.findById(userId);
-        log.info("Поиск непросмотренных анкет для пользователя с id = "+ user.getId());
+        log.info("Поиск непросмотренных анкет для пользователя с id = " + userId);
         return userService.findAll()
                 .stream()
                 .filter(checkUser -> !checkUser.getId().equals(userId) &&
-                        relationService.findRelationByUsers(user.getId(), checkUser.getId()).isEmpty() &&
+                        relationService.findRelationByUsers(user.getId(), checkUser.getId()) == null &&
                         userService.isUsersMatch(user, checkUser)
                 ).collect(Collectors.toList());
 

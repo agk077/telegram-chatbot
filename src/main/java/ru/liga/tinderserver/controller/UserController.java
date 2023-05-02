@@ -41,10 +41,16 @@ public class UserController {
     }
 
     private User convertToUser(UserDto userDto) {
+        if (userDto == null) {
+            return null;
+        }
         return modelMapper.map(userDto, User.class);
     }
 
     private UserDto convertToUserDto(User user) {
+        if (user == null) {
+            return null;
+        }
         return modelMapper.map(user, UserDto.class);
     }
 }

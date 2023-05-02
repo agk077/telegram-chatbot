@@ -29,6 +29,9 @@ public class FormController {
     }
 
     private UserDto convertToUserDto(User user) {
+        if (user == null) {
+            return null;
+        }
         return modelMapper.map(user, UserDto.class);
     }
 

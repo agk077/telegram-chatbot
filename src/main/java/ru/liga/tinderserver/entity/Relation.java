@@ -7,9 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 import java.io.Serializable;
-import java.util.List;
 
 @Entity
 @Table(name = "relation", schema = "hw_tinder")
@@ -23,9 +21,9 @@ public class Relation implements Serializable {
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column (name = "user_id")
+    @Column(name = "user_id")
     private Long userId;
-    @Column (name = "selected_user_id")
+    @Column(name = "selected_user_id")
     private Long selectedUserId;
     @Column(name = "sympathy", columnDefinition = "boolean default false")
     private boolean sympathy;

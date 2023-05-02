@@ -60,6 +60,11 @@ public class RelationController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("/{userId1}/{userId2}")
+    public RelationDto findRelationByUsers(@PathVariable Long userId1, @PathVariable Long userId2) {
+        return convertToRelationDto(relationService.findRelationByUsers(userId1, userId2));
+    }
+
     @PostMapping("/")
     public RelationDto create(@Valid @RequestBody RelationDto relationDto) {
         return convertToRelationDto(relationService.create(convertToRelation(relationDto)));
@@ -71,10 +76,16 @@ public class RelationController {
     }
 
     private Relation convertToRelation(RelationDto relationDto) {
+        if (relationDto == null) {
+            return null;
+        }
         return modelMapper.map(relationDto, Relation.class);
     }
 
     private RelationDto convertToRelationDto(Relation relation) {
+        if (relation == null) {
+            return null;
+        }
         return modelMapper.map(relation, RelationDto.class);
     }
 

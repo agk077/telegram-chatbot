@@ -10,8 +10,6 @@ import ru.liga.tinderserver.repository.RelationRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -116,10 +114,11 @@ public class RelationService {
      * @param selectedUserId пользователь, к которому отношения
      * @return список отношений
      */
-    public List<Relation> findRelationByUsers(Long userId, Long selectedUserId) {
+    public Relation findRelationByUsers(Long userId, Long selectedUserId) {
+        log.info("поиск отношения пользователя с id = " + userId + " к пользователю с id = " + selectedUserId);
         return findAllByUserId(userId).stream()
-                .filter(relation -> Objects.equals(relation.getSelectedUserId(), selectedUserId))
-                .collect(Collectors.toList());
+                .filter(relation -> relation.getSelectedUserId().equals(selectedUserId))
+                .findFirst().orElse(null);
     }
 
     @Transactional
