@@ -71,7 +71,6 @@ public class RelationService {
      * @param userId
      * @return список отношений
      */
-    //TODO: тесты
     public List<Relation> findMutualFeeling(Long userId) {
         List<Relation> result = new ArrayList<>();
         for (Relation relation : findLikeByUserId(userId)) {
