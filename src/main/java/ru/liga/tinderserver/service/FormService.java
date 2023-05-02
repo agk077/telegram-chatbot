@@ -1,12 +1,14 @@
 package ru.liga.tinderserver.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.liga.tinderserver.entity.User;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class FormService {
@@ -22,6 +24,7 @@ public class FormService {
      */
     public List<User> findNewForm(Long userId) {
         User user = userService.findById(userId);
+        log.info("Поиск непросмотренных анкет для пользователя с id = "+ user.getId());
         return userService.findAll()
                 .stream()
                 .filter(checkUser -> !checkUser.getId().equals(userId) &&

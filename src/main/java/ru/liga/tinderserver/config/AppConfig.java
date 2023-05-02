@@ -19,10 +19,8 @@ public class AppConfig {
         DriverManagerDataSource ds = new DriverManagerDataSource();
         ds.setDriverClassName("org.postgresql.Driver");
         ds.setUrl("jdbc:postgresql://localhost:5432/league_db");
-
-        //TODO: System.getenv вынести в переменные среды
-        ds.setUsername("admin");
-        ds.setPassword("qwerty$4");
+        ds.setUsername(System.getenv("UsernameDB"));
+        ds.setPassword(System.getenv("PasswordDB"));
         return ds;
     }
 

@@ -1,8 +1,8 @@
 package ru.liga.tinderserver.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
@@ -10,6 +10,9 @@ import java.io.Serializable;
 @Table(name = "user", schema = "hw_tinder")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Accessors(chain = true)
+@Builder
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

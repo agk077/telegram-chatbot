@@ -1,6 +1,7 @@
 package ru.liga.tinderserver.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.liga.tinderserver.entity.Relation;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RelationService {
@@ -19,10 +21,12 @@ public class RelationService {
     private final RelationRepository relationRepository;
 
     public List<Relation> findAll() {
+        log.info("поиск всех отношений");
         return relationRepository.findAll();
     }
 
     public Relation findById(Long id) {
+        log.info("поиск отношения с id = " + id);
         return relationRepository.findById(id).orElseThrow(() -> new RelationNotFoundException(id));
     }
 
@@ -34,6 +38,7 @@ public class RelationService {
      * @return список отношений
      */
     public List<Relation> findAllByUserId(Long userId) {
+        log.info("поиск всех отношений для пользователя userId = " + userId);
         return relationRepository.findAllByUserId(userId);
     }
 
@@ -45,6 +50,7 @@ public class RelationService {
      * @return список отношений
      */
     public List<Relation> findAllBySelectedUserId(Long userId) {
+        log.info("поиск всех отношений к пользователю userId = " + userId);
         return relationRepository.findAllBySelectedUserId(userId);
     }
 
@@ -56,6 +62,7 @@ public class RelationService {
      * @return список отношений
      */
     public List<Relation> findLikeByUserId(Long userId) {
+        log.info("поиск всех понравившихся  пользователю userId = " + userId);
         return relationRepository.findAllByUserIdAndSympathyTrue(userId);
     }
 
@@ -74,6 +81,7 @@ public class RelationService {
                 result.add(relation);
             }
         }
+        log.info("поиск всех взаимных симпатий для пользователя userId = " + userId);
         return result;
     }
 
@@ -86,7 +94,7 @@ public class RelationService {
      * @return список отношений
      */
 
-    private boolean isMutualLike(Long userId, Long selectedUserId) {
+    public boolean isMutualLike(Long userId, Long selectedUserId) {
         List<Relation> relations = findAllByUserId(userId).stream()
                 .filter(mutualLike -> mutualLike.getSelectedUserId().equals(selectedUserId)
                         && mutualLike.isSympathy())
@@ -96,7 +104,8 @@ public class RelationService {
 
     @Transactional
     public Relation create(Relation relation) {
-       return relationRepository.save(relation);
+        log.info("создаем новые отношения:  " + relation);
+        return relationRepository.save(relation);
     }
 
     /**
@@ -115,7 +124,12 @@ public class RelationService {
 
     @Transactional
     public Relation update(Long id, Relation relation) {
-        relation.setId(id);
+        try {
+            relation.setId(id);
+        } catch (RelationNotFoundException e) {
+            log.error(e.getMessage());
+        }
+        log.info("изменение отношений с id = " + id + " " + relation);
         return relationRepository.save(relation);
     }
 }
