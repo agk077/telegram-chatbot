@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.liga.tinderserver.dto.UserDto;
-import ru.liga.tinderserver.entity.User;
 import ru.liga.tinderserver.service.FormService;
 
 import java.util.List;
@@ -24,15 +23,8 @@ public class FormController {
     @GetMapping("unseen/{userId}")
     public List<UserDto> findNewForm(@PathVariable Long userId) {
         return formService.findNewForm(userId).stream()
-                .map(this::convertToUserDto)
+                .map(user -> modelMapper.map(user, UserDto.class))
                 .collect(Collectors.toList());
-    }
-
-    private UserDto convertToUserDto(User user) {
-        if (user == null) {
-            return null;
-        }
-        return modelMapper.map(user, UserDto.class);
     }
 
 }

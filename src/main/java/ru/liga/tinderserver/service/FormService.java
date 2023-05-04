@@ -28,7 +28,7 @@ public class FormService {
         return userService.findAll()
                 .stream()
                 .filter(checkUser -> !checkUser.getId().equals(userId) &&
-                        relationService.findRelationByUsers(user.getId(), checkUser.getId()) == null &&
+                        !relationService.isRelationByUsers(user.getId(), checkUser.getId()) &&
                         userService.isUsersMatch(user, checkUser)
                 ).collect(Collectors.toList());
 

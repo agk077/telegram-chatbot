@@ -21,36 +21,23 @@ public class UserController {
     @GetMapping
     public List<UserDto> findAll() {
         return userService.findAll().stream()
-                .map(this::convertToUserDto)
+                .map(user -> modelMapper.map(user, UserDto.class))
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
     public UserDto findById(@PathVariable Long id) {
-        return convertToUserDto(userService.findById(id));
+        return modelMapper.map(userService.findById(id), UserDto.class);
     }
 
     @PostMapping("/")
     public UserDto create(@Valid @RequestBody UserDto userDto) {
-        return convertToUserDto(userService.create(convertToUser(userDto)));
+        return modelMapper.map(userService.create(modelMapper.map(userDto, User.class)), UserDto.class);
     }
 
     @PutMapping("/{id}")
     public UserDto update(@PathVariable Long id, @Valid @RequestBody UserDto userDto) {
-        return convertToUserDto(userService.update(id, convertToUser(userDto)));
+        return modelMapper.map(userService.update(id, modelMapper.map(userDto, User.class)), UserDto.class);
     }
 
-    private User convertToUser(UserDto userDto) {
-        if (userDto == null) {
-            return null;
-        }
-        return modelMapper.map(userDto, User.class);
-    }
-
-    private UserDto convertToUserDto(User user) {
-        if (user == null) {
-            return null;
-        }
-        return modelMapper.map(user, UserDto.class);
-    }
 }

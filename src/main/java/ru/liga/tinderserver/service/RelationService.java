@@ -19,12 +19,12 @@ public class RelationService {
     private final RelationRepository relationRepository;
 
     public List<Relation> findAll() {
-        log.info("поиск всех отношений");
+        log.info("Поиск всех отношений");
         return relationRepository.findAll();
     }
 
     public Relation findById(Long id) {
-        log.info("поиск отношения с id = " + id);
+        log.info("Поиск отношения с id = " + id);
         return relationRepository.findById(id).orElseThrow(() -> new RelationNotFoundException(id));
     }
 
@@ -36,7 +36,7 @@ public class RelationService {
      * @return список отношений
      */
     public List<Relation> findAllByUserId(Long userId) {
-        log.info("поиск всех отношений для пользователя userId = " + userId);
+        log.info("Поиск всех отношений для пользователя userId = " + userId);
         return relationRepository.findAllByUserId(userId);
     }
 
@@ -48,7 +48,7 @@ public class RelationService {
      * @return список отношений
      */
     public List<Relation> findAllBySelectedUserId(Long userId) {
-        log.info("поиск всех отношений к пользователю userId = " + userId);
+        log.info("Поиск всех отношений к пользователю userId = " + userId);
         return relationRepository.findAllBySelectedUserId(userId);
     }
 
@@ -60,7 +60,7 @@ public class RelationService {
      * @return список отношений
      */
     public List<Relation> findLikeByUserId(Long userId) {
-        log.info("поиск всех понравившихся  пользователю userId = " + userId);
+        log.info("Поиск всех понравившихся  пользователю userId = " + userId);
         return relationRepository.findAllByUserIdAndSympathyTrue(userId);
     }
 
@@ -78,7 +78,7 @@ public class RelationService {
                 result.add(relation);
             }
         }
-        log.info("поиск всех взаимных симпатий для пользователя userId = " + userId);
+        log.info("Поиск всех взаимных симпатий для пользователя userId = " + userId);
         return result;
     }
 
@@ -101,33 +101,31 @@ public class RelationService {
 
     @Transactional
     public Relation create(Relation relation) {
-        log.info("создаем новые отношения:  " + relation);
+        log.info("Создаем новые отношения:  " + relation);
         return relationRepository.save(relation);
     }
 
     /**
-     * Метод возвращает оношение первого пользователя
+     * Метод возвращает есть ли оношение первого пользователя
      * ко второму
      *
      * @param userId         пользователь, у которого проверяем отношения
-     * @param selectedUserId пользователь, к которому отношения
-     * @return список отношений
+     * @param selectedUserId пользователь, к которому проверяем отношения
+     * @return boolean
      */
-    public Relation findRelationByUsers(Long userId, Long selectedUserId) {
-        log.info("поиск отношения пользователя с id = " + userId + " к пользователю с id = " + selectedUserId);
+    public boolean isRelationByUsers(Long userId, Long selectedUserId) {
+        log.info("Поиск отношения пользователя с id = " + userId + " к пользователю с id = " + selectedUserId);
         return findAllByUserId(userId).stream()
-                .filter(relation -> relation.getSelectedUserId().equals(selectedUserId))
-                .findFirst().orElse(null);
+                .anyMatch(relation -> relation.getSelectedUserId().equals(selectedUserId));
     }
 
     @Transactional
-    public Relation update(Long id, Relation relation) {
-        try {
-            relation.setId(id);
-        } catch (RelationNotFoundException e) {
-            log.error(e.getMessage());
-        }
-        log.info("изменение отношений с id = " + id + " " + relation);
+    public Relation update(Long id, Relation relationForChange) {
+        Relation relation = findById(id);
+        relation.setUserId(relationForChange.getUserId())
+                .setSelectedUserId(relationForChange.getSelectedUserId())
+                .setSympathy(relationForChange.isSympathy());
+        log.info("Изменение отношений с id = " + id + " " + relation);
         return relationRepository.save(relation);
     }
 }

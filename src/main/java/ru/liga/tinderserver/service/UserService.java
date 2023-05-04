@@ -18,29 +18,29 @@ public class UserService {
     private final UserRepository userRepository;
 
     public List<User> findAll() {
-        log.info("поиск всех пользователей");
+        log.info("Поиск всех пользователей");
         return userRepository.findAll();
     }
 
     public User findById(Long id) {
-        log.info("поиск пользователя с id = " + id);
+        log.info("Поиск пользователя с id = " + id);
         return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
 
     @Transactional
     public User create(User user) {
-        log.info("создаем пользователя: " + user);
+        log.info("Создаем пользователя: " + user);
         return userRepository.save(user);
     }
 
     @Transactional
-    public User update(Long id, User user) {
-        try {
-            user.setId(id);
-        } catch (UserNotFoundException e) {
-            log.error(e.getMessage());
-        }
-        log.info("изменяем пользователя id = " + id + " " + user);
+    public User update(Long id, User userForChange) {
+        User user = findById(id);
+        user.setName(userForChange.getName())
+                .setDesc(userForChange.getDesc())
+                .setGender(userForChange.getGender())
+                .setGenderForSearch(userForChange.getGenderForSearch());
+        log.info("Изменяем пользователя id = " + id + " " + user);
         return userRepository.save(user);
     }
 
@@ -54,7 +54,7 @@ public class UserService {
      * @return список отношений
      */
     public boolean isUsersMatch(User user1, User user2) {
-        log.info("выясняем подходят ли пользователи друг другу " + user1.getId() + " и " + user2.getId());
+        log.info("Выясняем подходят ли пользователи друг другу " + user1.getId() + " и " + user2.getId());
         return ((user1.getGenderForSearch() == null || user1.getGenderForSearch().equals(user2.getGender()))
                 && (user2.getGenderForSearch() == null || user2.getGenderForSearch().equals(user1.getGender())));
     }

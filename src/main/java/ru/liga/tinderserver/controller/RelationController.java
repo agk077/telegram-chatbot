@@ -23,71 +23,51 @@ public class RelationController {
     @GetMapping
     public List<RelationDto> findAll() {
         return relationService.findAll().stream()
-                .map(this::convertToRelationDto)
+                .map(relation -> modelMapper.map(relation, RelationDto.class))
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
     public RelationDto findById(@PathVariable Long id) {
-        return convertToRelationDto(relationService.findById(id));
+        return modelMapper.map(relationService.findById(id), RelationDto.class);
     }
 
     @GetMapping("user/{userId}")
     public List<RelationDto> findAllUserId(@PathVariable Long userId) {
         return relationService.findAllByUserId(userId).stream()
-                .map(this::convertToRelationDto)
+                .map(relation -> modelMapper.map(relation, RelationDto.class))
                 .collect(Collectors.toList());
     }
 
     @GetMapping("user/like/{userId}")
     public List<RelationDto> findLikeUserId(@PathVariable Long userId) {
         return relationService.findLikeByUserId(userId).stream()
-                .map(this::convertToRelationDto)
+                .map(relation -> modelMapper.map(relation, RelationDto.class))
                 .collect(Collectors.toList());
     }
 
     @GetMapping("selected/{selectedUserId}")
     public List<RelationDto> findAllSelectedUserID(@PathVariable Long selectedUserId) {
         return relationService.findAllBySelectedUserId(selectedUserId).stream()
-                .map(this::convertToRelationDto)
+                .map(relation -> modelMapper.map(relation, RelationDto.class))
                 .collect(Collectors.toList());
     }
 
     @GetMapping("mutual/{userId}")
     public List<RelationDto> findMutualFeeling(@PathVariable Long userId) {
         return relationService.findMutualFeeling(userId).stream()
-                .map(this::convertToRelationDto)
+                .map(relation -> modelMapper.map(relation, RelationDto.class))
                 .collect(Collectors.toList());
-    }
-
-    @GetMapping("/{userId1}/{userId2}")
-    public RelationDto findRelationByUsers(@PathVariable Long userId1, @PathVariable Long userId2) {
-        return convertToRelationDto(relationService.findRelationByUsers(userId1, userId2));
     }
 
     @PostMapping("/")
     public RelationDto create(@Valid @RequestBody RelationDto relationDto) {
-        return convertToRelationDto(relationService.create(convertToRelation(relationDto)));
+        return modelMapper.map(relationService.create(modelMapper.map(relationDto, Relation.class)), RelationDto.class);
     }
 
     @PutMapping("/{id}")
     public RelationDto update(@PathVariable Long id, @Valid @RequestBody RelationDto relationDto) {
-        return convertToRelationDto(relationService.update(id, convertToRelation(relationDto)));
+        return modelMapper.map(relationService.update(id, modelMapper.map(relationDto, Relation.class)), RelationDto.class);
     }
-
-    private Relation convertToRelation(RelationDto relationDto) {
-        if (relationDto == null) {
-            return null;
-        }
-        return modelMapper.map(relationDto, Relation.class);
-    }
-
-    private RelationDto convertToRelationDto(Relation relation) {
-        if (relation == null) {
-            return null;
-        }
-        return modelMapper.map(relation, RelationDto.class);
-    }
-
 
 }

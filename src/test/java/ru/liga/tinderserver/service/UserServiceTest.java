@@ -35,16 +35,26 @@ class UserServiceTest {
 
 
     @Test
-    public void isUsersMatchTest() {
+    public void isUsersMatchTrueTest() {
+        Mockito.doReturn(Optional.ofNullable(users[0])).when(userRepository).findById(1L);
+        Mockito.doReturn(Optional.ofNullable(users[2])).when(userRepository).findById(3L);
+        Mockito.doReturn(Optional.ofNullable(users[3])).when(userRepository).findById(4L);
+
+
+        assertTrue(userService.isUsersMatch(userRepository.findById(1L).get(), userRepository.findById(3L).get()));
+        assertTrue(userService.isUsersMatch(userRepository.findById(1L).get(), userRepository.findById(4L).get()));
+
+    }
+
+    @Test
+    public void isUsersMatchFalseTest() {
         Mockito.doReturn(Optional.ofNullable(users[0])).when(userRepository).findById(1L);
         Mockito.doReturn(Optional.ofNullable(users[1])).when(userRepository).findById(2L);
         Mockito.doReturn(Optional.ofNullable(users[2])).when(userRepository).findById(3L);
         Mockito.doReturn(Optional.ofNullable(users[3])).when(userRepository).findById(4L);
 
 
-        assertTrue(userService.isUsersMatch(userRepository.findById(1L).get(), userRepository.findById(3L).get()));
         assertFalse(userService.isUsersMatch(userRepository.findById(1L).get(), userRepository.findById(2L).get()));
-        assertTrue(userService.isUsersMatch(userRepository.findById(1L).get(), userRepository.findById(4L).get()));
         assertFalse(userService.isUsersMatch(userRepository.findById(3L).get(), userRepository.findById(4L).get()));
         assertFalse(userService.isUsersMatch(userRepository.findById(4L).get(), userRepository.findById(3L).get()));
 

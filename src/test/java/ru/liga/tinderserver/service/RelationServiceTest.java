@@ -34,11 +34,10 @@ class RelationServiceTest {
     }
 
     @Test
-    void isMutualLikeTest() {
+    void isMutualLikeTrueTest() {
         Mockito.doReturn(Optional.ofNullable(relations[0])).when(relationRepository).findById(1L);
         Mockito.doReturn(Optional.ofNullable(relations[1])).when(relationRepository).findById(2L);
         Mockito.doReturn(Optional.ofNullable(relations[2])).when(relationRepository).findById(3L);
-        Mockito.doReturn(Optional.ofNullable(relations[3])).when(relationRepository).findById(4L);
         Mockito.doReturn(Optional.ofNullable(relations[4])).when(relationRepository).findById(5L);
         Mockito.doReturn(Arrays.asList(relations).stream()
                         .filter(relation -> relation.getUserId().equals(1L))
@@ -54,12 +53,28 @@ class RelationServiceTest {
                 .when(relationRepository).findAllByUserId(5L);
 
 
-        assertFalse(relationService.isMutualLike(relationRepository.findById(1L).get().getUserId(), relationRepository.findById(2L).get().getUserId()));
-        assertFalse(relationService.isMutualLike(relationRepository.findById(1L).get().getUserId(), relationRepository.findById(4L).get().getUserId()));
-        assertFalse(relationService.isMutualLike(relationRepository.findById(1L).get().getUserId(), relationRepository.findById(5L).get().getUserId()));
         assertTrue(relationService.isMutualLike(relationRepository.findById(3L).get().getUserId(), relationRepository.findById(2L).get().getUserId()));
         assertTrue(relationService.isMutualLike(relationRepository.findById(5L).get().getUserId(), relationRepository.findById(1L).get().getUserId()));
         assertTrue(relationService.isMutualLike(relationRepository.findById(1L).get().getUserId(), relationRepository.findById(3L).get().getUserId()));
+
+    }
+
+
+    @Test
+    void isMutualLikeFalseTest() {
+        Mockito.doReturn(Optional.ofNullable(relations[0])).when(relationRepository).findById(1L);
+        Mockito.doReturn(Optional.ofNullable(relations[1])).when(relationRepository).findById(2L);
+        Mockito.doReturn(Optional.ofNullable(relations[3])).when(relationRepository).findById(4L);
+        Mockito.doReturn(Optional.ofNullable(relations[4])).when(relationRepository).findById(5L);
+        Mockito.doReturn(Arrays.asList(relations).stream()
+                        .filter(relation -> relation.getUserId().equals(1L))
+                        .collect(Collectors.toList()))
+                .when(relationRepository).findAllByUserId(1L);
+
+
+        assertFalse(relationService.isMutualLike(relationRepository.findById(1L).get().getUserId(), relationRepository.findById(2L).get().getUserId()));
+        assertFalse(relationService.isMutualLike(relationRepository.findById(1L).get().getUserId(), relationRepository.findById(4L).get().getUserId()));
+        assertFalse(relationService.isMutualLike(relationRepository.findById(1L).get().getUserId(), relationRepository.findById(5L).get().getUserId()));
 
     }
 
